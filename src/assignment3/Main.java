@@ -1,14 +1,14 @@
 /* WORD LADDER Main.java
  * EE422C Project 3 submission by
  * Replace <...> with your actual data.
+ * Ali Ziyaan Momin
+ * AZM259
+ * 16470
  * Aaron Babber
  * aab3456
- * <Student1 5-digit Unique No.>
- * <Student2 Name>
- * <Student2 EID>
- * <Student2 5-digit Unique No.>
- * Slip days used: <0>
- * Git URL:
+ * 16480
+ * Slip days used: 0
+ * Git URL: https://github.com/AABabber/EE_422C_Project3.git
  * Fall 2016
  */
 
@@ -18,11 +18,11 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-	
+
 	// static variables and constants only here.
-	
+
 	public static void main(String[] args) throws Exception {
-		
+
 		Scanner kb;	// input Scanner for commands
 		PrintStream ps;	// output file
 		// If arguments are specified, read/write from/to files instead of Std IO.
@@ -35,46 +35,46 @@ public class Main {
 			ps = System.out;			// default to Stdout
 		}
 		initialize();
-		
+
 		// TODO methods to read in words, output ladder
 	}
-	
+
 	public static void initialize() {
 		// initialize your static variables or constants here.
-		// We will call this method before running our JUNIT tests.  So call it 
+		// We will call this method before running our JUNIT tests.  So call it
 		// only once at the start of main.
 	}
-	
+
 	/**
 	 * @param keyboard Scanner connected to System.in
-	 * @return ArrayList of 2 Strings containing start word and end word. 
-	 * If command is /quit, return empty ArrayList. 
+	 * @return ArrayList of 2 Strings containing start word and end word.
+	 * If command is /quit, return empty ArrayList.
 	 */
 	public static ArrayList<String> parse(Scanner keyboard) {
 		// TO DO
 		return null;
 	}
-	
+
 	public static ArrayList<String> getWordLadderDFS(String start, String end) {
-		
+
 		// Returned list should be ordered start to end.  Include start and end.
 		// Return empty list if no ladder.
 		// TODO some code
 		Set<String> dict = makeDictionary();
 		// TODO more code
-		
+
 		return null; // replace this line later with real return
 	}
-	
+
     public static ArrayList<String> getWordLadderBFS(String start, String end) {
-		
+
 		// TODO some code
 		Set<String> dict = makeDictionary();
 		// TODO more code
-		
+
 		return null; // replace this line later with real return
 	}
-    
+
 	public static Set<String>  makeDictionary () {
 		Set<String> words = new HashSet<String>();
 		Scanner infile = null;
@@ -90,9 +90,9 @@ public class Main {
 		}
 		return words;
 	}
-	
+
 	public static void printLadder(ArrayList<String> ladder) {
-		
+
 	}
 	// TODO
 	// Other private static methods here
