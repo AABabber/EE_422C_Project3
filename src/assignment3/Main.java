@@ -12,7 +12,6 @@
  * Fall 2016
  */
 
-
 package assignment3;
 import java.util.*;
 import java.io.*;
@@ -21,7 +20,8 @@ public class Main {
 
 	// static variables and constants only here.
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception 
+	{
 
 		Scanner kb;	// input Scanner for commands
 		PrintStream ps;	// output file
@@ -34,12 +34,14 @@ public class Main {
 			kb = new Scanner(System.in);// default from Stdin
 			ps = System.out;			// default to Stdout
 		}
+		
 		initialize();
 
 		// TODO methods to read in words, output ladder
 	}
 
-	public static void initialize() {
+	public static void initialize() 
+	{
 		// initialize your static variables or constants here.
 		// We will call this method before running our JUNIT tests.  So call it
 		// only once at the start of main.
@@ -50,12 +52,14 @@ public class Main {
 	 * @return ArrayList of 2 Strings containing start word and end word.
 	 * If command is /quit, return empty ArrayList.
 	 */
-	public static ArrayList<String> parse(Scanner keyboard) {
+	public static ArrayList<String> parse(Scanner keyboard) 
+	{
 		// TO DO
 		return null;
 	}
 
-	public static ArrayList<String> getWordLadderDFS(String start, String end) {
+	public static ArrayList<String> getWordLadderDFS(String start, String end) 
+	{
 
 		// Returned list should be ordered start to end.  Include start and end.
 		// Return empty list if no ladder.
@@ -66,7 +70,8 @@ public class Main {
 		return null; // replace this line later with real return
 	}
 
-    public static ArrayList<String> getWordLadderBFS(String start, String end) {
+    public static ArrayList<String> getWordLadderBFS(String start, String end) 
+    {
 
 		// TODO some code
 		Set<String> dict = makeDictionary();
@@ -75,7 +80,8 @@ public class Main {
 		return null; // replace this line later with real return
 	}
 
-	public static Set<String>  makeDictionary () {
+	public static Set<String>  makeDictionary() 
+	{
 		Set<String> words = new HashSet<String>();
 		Scanner infile = null;
 		try {
@@ -91,9 +97,12 @@ public class Main {
 		return words;
 	}
 
-	public static void printLadder(ArrayList<String> ladder) {
+	public static void printLadder(ArrayList<String> ladder) 
+	{
 
 	}
 	// TODO
 	// Other private static methods here
+	
+	
 }
