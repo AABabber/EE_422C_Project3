@@ -1,8 +1,8 @@
 /* WORD LADDER Main.java
  * EE422C Project 3 submission by
  * Replace <...> with your actual data.
- * <Student1 Name>
- * <Student1 EID>
+ * Aaron Babber
+ * aab3456
  * <Student1 5-digit Unique No.>
  * <Student2 Name>
  * <Student2 EID>
