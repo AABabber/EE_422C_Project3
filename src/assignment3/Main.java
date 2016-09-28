@@ -69,30 +69,33 @@ public class Main {
 	 * @return ArrayList of 2 Strings containing start word and end word.
 	 * If command is /quit, return empty ArrayList.
 	 */
-	public static ArrayList<String> parse(Scanner keyboard) 
-	{	
-		
-		// TODO Rewrite 
-		
-		String pArray = keyboard.nextLine();
-		
-		// TODO Revise to account for "/quit" as second argument
+	public static ArrayList<String> parse(Scanner keyboard)
+	{
+	    String input = keyboard.nextLine();
 
-		ArrayList<String> splitWords = new ArrayList<String>();
-		String[] temp = pArray.split(" ");
-		splitWords.add(temp[0]);
-		words[0] = temp[0];
-		splitWords.add(temp[1].toUpperCase());
-		words[1] = temp[1];
+	    /* Divides the input into its respective commands and stores
+	     * the results in an array. The regex "\\s+" splits the input String
+	     * using any whitespace character (the \\s part) as a delimiter. The '+'
+	     * character is a quantifier for "one or more times".
+	     */
+	    String[] commands = input.split("\\s+");
+	    ArrayList<String> splitWords;
 
-		for(String s : splitWords){
-			if(s.equals("/quit")){
-				//return new ArrayList<String>();
-				System.exit(0);
-			}
-		}
+	    if (commands.length < 1) {
+	        System.exit(1);
+	    }
 
-		return splitWords;
+	    splitWords = new ArrayList<String>(Arrays.asList(commands));
+	    for (String word : splitWords) {
+	        if (word.equals("/quit")) {
+	            System.exit(0);
+	        }
+	    }
+
+	    words[0] = splitWords.get(0);
+	    words[1] = splitWords.get(1);
+
+	    return splitWords;
 	}
 
 	public static ArrayList<String> getWordLadderDFS(String start, String end) 
