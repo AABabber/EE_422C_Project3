@@ -153,7 +153,8 @@ public class Main {
 		
 		// TODO Move dictionaries?
 		try {
-			infile = new Scanner (new File("five_letter_words.txt"));
+			infile = new Scanner (new File(Main.class.getResource("five_letter_words.txt").getPath()));
+			//infile = new Scanner (new File("five_letter_words.txt"));
 		} catch (FileNotFoundException e) {
 			System.out.println("Dictionary File not Found!");
 			e.printStackTrace();
