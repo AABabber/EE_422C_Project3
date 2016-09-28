@@ -167,4 +167,15 @@ public class Main {
 
 	}
 	
+	private static ArrayList<String> treeToLadder(Node end) 
+	{
+		ArrayList<String> wordLadder = new ArrayList<String>();
+		Node current = end;
+		while (current.getPreviousNode() != null) {
+			
+		}
+		
+		return wordLadder;
+	}
+	
 }
