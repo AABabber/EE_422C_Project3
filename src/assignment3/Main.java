@@ -13,16 +13,16 @@
  */
 
 package assignment3;
+
 import java.util.*;
-
-import assignment2.GameConfiguration;
-
 import java.io.*;
 
 public class Main {
 
 	// Constants and static variables
-	public static String[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+	public static String[] alphabet  = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+	// TODO Appropriate way to store input? (see @194 & @204)
+	public static String[] words = {"",""};
 
 	public static void main(String[] args) throws Exception 
 	{
@@ -35,20 +35,28 @@ public class Main {
 			ps = new PrintStream(new File(args[1]));
 			System.setOut(ps);			// redirect output to ps
 		} else {
-			kb = new Scanner(System.in);// default from Stdin
-			ps = System.out;			// default to Stdout
+			kb = new Scanner(System.in);	// default from Stdin
+			ps = System.out;				// default to Stdout
 		}
 		
 		initialize();
 
-		// TODO methods to read in words, output ladder
+		//  Methods to read in words, output ladder
+		
+		ArrayList<String> words = parse(kb);
+		ArrayList<String> wordLadder = getWordLadderBFS(words.get(0), words.get(1));
+		printLadder(wordLadder);
+		
 	}
-
+	
+	/**
+	 * Initialize the static variables and constants here.
+	 * This method is called (once) before running JUNIT tests. 
+	 */
 	public static void initialize() 
 	{
-		// initialize your static variables or constants here.
-		// We will call this method before running our JUNIT tests.  So call it
-		// only once at the start of main.
+		// alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+		// words = new String[2];
 	}
 
 	/**
@@ -61,14 +69,17 @@ public class Main {
 	public static ArrayList<String> parse(Scanner keyboard) 
 	{	
 		
-		// TODO Revise 
+		// TODO Rewrite 
 		
 		ArrayList<String> pArray = new ArrayList<String>();
 		pArray.add(keyboard.nextLine());
-
+		
+		// TODO Revise to account for "/quit" as second argument
+		
 		for(String s : pArray){
 			if(s.equals("/quit")){
-				return new ArrayList<String>();
+				//return new ArrayList<String>();
+				System.exit(0);
 			}
 			else{
 				break;
@@ -78,28 +89,40 @@ public class Main {
 		ArrayList<String> splitWords = new ArrayList<String>();
 		String[] temp = pArray.get(0).split(" ");
 		splitWords.add(temp[0]);
+		words[0] = temp[0];
 		splitWords.add(temp[1]);
+		words[1] = temp[1];
+		
 		return splitWords;
 	}
 
 	public static ArrayList<String> getWordLadderDFS(String start, String end) 
 	{
-
+		// Set static variables
+		words[0] = start;
+		words[1] = end;
+		
 		// Returned list should be ordered start to end.  Include start and end.
 		// Return empty list if no ladder.
-		// TODO some code
+				
+		// TODO Write method
+		
 		Set<String> dict = makeDictionary();
-		// TODO more code
 
-		return null; // replace this line later with real return
+		return null; // TODO Replace this line later with real return
 	}
 
     public static ArrayList<String> getWordLadderBFS(String start, String end) 
     {
+    	// Set static variables
+		words[0] = start;
+		words[1] = end;
+		
+		// Initialization 
 		Set<String> dict = makeDictionary();
-		Set<String> encountered = new HashSet<String>();
+		Set<String> encounteredWords = new HashSet<String>();
 		Queue<Node> q = new LinkedList<Node>();
-		Node wordTreeRoot = new Node(start, null);
+		Node wordTreeRoot = new Node(start.toUpperCase(), null);
 		ArrayList<String> emptyLadder = new ArrayList<String>();
 		
 		// Return empty ladder if start and end are the same word
@@ -108,7 +131,7 @@ public class Main {
 		}
 		
 		q.add(wordTreeRoot);	// Add start to queue so loop condition doesn't fail
-		encountered.add(start);
+		encounteredWords.add(wordTreeRoot.getWord());
 		Node current;
 		
 		while(!q.isEmpty()) {
@@ -116,7 +139,7 @@ public class Main {
 			if (current.getWord().equals(end)) {
 				return treeToLadder(current);		// Build ladder as ArrayList and return
 			}
-			permutations(dict, encountered, q, current);	// Updates queue and current node connections
+			permutations(dict, encounteredWords, q, current);	// Updates queue and current node connections
 		}
 		
 		// If there is no ladder, we return an empty list.
@@ -128,7 +151,7 @@ public class Main {
 		Set<String> words = new HashSet<String>();
 		Scanner infile = null;
 		
-		// TODO Move dictionaries into assignment3 package
+		// TODO Move dictionaries?
 		try {
 			infile = new Scanner (new File("five_letter_words.txt"));
 		} catch (FileNotFoundException e) {
@@ -143,10 +166,28 @@ public class Main {
 		
 		return words;
 	}
-
+	
+	// TODO Determine if this method will be called independently of parse() (see @194 & @204)
+	// If so, we must update the words array in each search function.
 	public static void printLadder(ArrayList<String> ladder) 
 	{
-
+		// All output must be in lower case
+		if (ladder.isEmpty()) {
+			System.out.println("no word ladder can be found between " + words[0].toLowerCase() + 
+							   " and " + words[1].toLowerCase() + ".");
+		}
+		else {
+			String start = ladder.get(0);
+			String end = ladder.get(ladder.size() - 1);
+			int rungLength = ladder.size() - 2;
+			
+			System.out.println("a " + rungLength + "-rung word ladder exists between " + 
+								start.toLowerCase() + " and " + end.toLowerCase() + ".");
+			for (String word : ladder) {
+				System.out.println(word.toLowerCase());
+			}
+		}
+		
 	}
 	
 	
