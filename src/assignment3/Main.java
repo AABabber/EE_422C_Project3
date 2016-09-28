@@ -89,11 +89,11 @@ public class Main {
     {
 		Set<String> dict = makeDictionary();
 		Set<String> encountered = new HashSet<String>();
-		Queue<Node> q = new LinkedList();
+		Queue<Node> q = new LinkedList<Node>();
 		Node wordTreeRoot = new Node(start, null);
 		
-		// Add start to queue so while loop condition doesn't fail
-		q.add(wordTreeRoot);
+		q.add(wordTreeRoot);	// Add start to queue so loop condition doesn't fail
+		encountered.add(start);
 		Node current;
 		while(!q.isEmpty()) {
 			
@@ -138,19 +138,23 @@ public class Main {
 	
 	// ----------------------------------- Private Static Methods ----------------------------------- //
 
-	private static void permutations(Set<String> dict, Set<String> encountered, Queue<Node> q, Node n){
+	private static void permutations(Set<String> dict, Set<String> encountered, Queue<Node> q, Node n)
+	{
 		String[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 		String[] word = n.getWord().toUpperCase().split("");
-		String[] tempStr;
+		String[] tempStr = new String[word.length];
 
 		List<Node> placeholder = n.getNextList();
-		for(int i = 0; i < word.length; i ++){
-			for(int j = 0; j < alphabet.length; j ++){
-				tempStr = word;
+		for(int i = 0; i < word.length; i++){
+			/* 'tempStr = word' would be a "shallow copy"
+			 * using the copyOf() method creates a "deep copy"
+			 */
+			tempStr = Arrays.copyOf(word, word.length);
+			for(int j = 0; j < alphabet.length; j++){
 				tempStr[i] = alphabet[j];
 				StringBuilder permut = new StringBuilder();
-				for(String str: tempStr) {
-					permut.append(str);
+				for(String letter: tempStr) {
+					permut.append(letter);
 				}
 				String finalPermut = permut.toString();
 
@@ -176,7 +180,7 @@ public class Main {
 			current = end.getPreviousNode();
 		}
 		
-		// Adds the first word as it doesn't get done in while loop
+		// Adds the first word as that doesn't get done in the while loop
 		wordLadder.add(current.getWord());	
 		
 		// Puts word ladder in proper order 
