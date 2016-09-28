@@ -142,10 +142,25 @@ public class Main {
 		String[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 		String[] word = n.getWord().toUpperCase().split("");
 		String[] tempStr;
-		List<Node> temp = n.getNextList();
+
+		List<Node> placeholder = n.getNextList();
 		for(int i = 0; i < word.length; i ++){
 			for(int j = 0; j < alphabet.length; j ++){
 				tempStr = word;
+				tempStr[i] = alphabet[j];
+				StringBuilder permut = new StringBuilder();
+				for(String str: tempStr) {
+					permut.append(str);
+				}
+				String finalPermut = permut.toString();
+
+				if(dict.contains(finalPermut) && !encountered.contains(finalPermut)){
+					encountered.add(finalPermut);
+					Node temp = new Node(finalPermut, n);
+					placeholder.add(temp);
+					q.add(temp);
+				}
+
 			}
 
 		}
