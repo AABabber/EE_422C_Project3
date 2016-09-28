@@ -78,7 +78,9 @@ public class Main {
 		ArrayList<String> splitWords = new ArrayList<String>();
 		String[] temp = pArray.split(" ");
 		splitWords.add(temp[0]);
+		words[0] = temp[0];
 		splitWords.add(temp[1]);
+		words[1] = temp[1];
 
 		for(String s : splitWords){
 			if(s.equals("/quit")){
@@ -86,7 +88,7 @@ public class Main {
 				System.exit(0);
 			}
 		}
-		
+
 		return splitWords;
 	}
 
