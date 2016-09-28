@@ -83,16 +83,29 @@ public class Main {
 
     public static ArrayList<String> getWordLadderBFS(String start, String end) 
     {
-
-		// Initialize a Queue using a LinkedList
-    	
-    	// Initialize a Set using HashSet for encountered words
-    	
-    	// Initialize a Node for use with the start word
-    	
 		Set<String> dict = makeDictionary();
+		Set<String> encountered = new HashSet<String>();
+		Queue<Node> q = new LinkedList();
+		Node wordTreeRoot = new Node(start);
 		
-
+		// Add start to queue so while loop condition doesn't fail
+		q.add(wordTreeRoot);
+		Node current;
+		while(!q.isEmpty()) {
+			
+			current = q.remove();
+			
+			if (current.getWord().equals(end)) {
+				
+				// Build ladder as ArrayList
+				// Return ladder
+				
+			}
+		
+			// for loop for each 1-letter permutation
+			
+		}
+		
 		return null; // TODO Replace this line later with real return
 	}
 
