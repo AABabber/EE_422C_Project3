@@ -88,9 +88,9 @@ public class Main {
 		
 		ArrayList<String> splitWords = new ArrayList<String>();
 		String[] temp = pArray.get(0).split(" ");
-		splitWords.add(temp[0]);
+		splitWords.add(temp[0].toUpperCase());
 		words[0] = temp[0];
-		splitWords.add(temp[1]);
+		splitWords.add(temp[1].toUpperCase());
 		words[1] = temp[1];
 		
 		return splitWords;
@@ -99,8 +99,8 @@ public class Main {
 	public static ArrayList<String> getWordLadderDFS(String start, String end) 
 	{
 		// Set static variables
-		words[0] = start;
-		words[1] = end;
+		words[0] = start.toUpperCase();
+		words[1] = end.toUpperCase();
 		
 		// Returned list should be ordered start to end.  Include start and end.
 		// Return empty list if no ladder.
@@ -115,8 +115,8 @@ public class Main {
     public static ArrayList<String> getWordLadderBFS(String start, String end) 
     {
     	// Set static variables
-		words[0] = start;
-		words[1] = end;
+		words[0] = start.toUpperCase();
+		words[1] = end.toUpperCase();
 		
 		// Initialization 
 		Set<String> dict = makeDictionary();
@@ -136,7 +136,7 @@ public class Main {
 		
 		while(!q.isEmpty()) {
 			current = q.remove();
-			if (current.getWord().equals(end)) {
+			if (current.getWord().equals(end.toUpperCase())) {
 				return treeToLadder(current);		// Build ladder as ArrayList and return
 			}
 			permutations(dict, encounteredWords, q, current);	// Updates queue and current node connections
