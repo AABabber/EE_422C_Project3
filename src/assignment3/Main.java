@@ -71,27 +71,21 @@ public class Main {
 		
 		// TODO Rewrite 
 		
-		ArrayList<String> pArray = new ArrayList<String>();
-		pArray.add(keyboard.nextLine());
+		String pArray = keyboard.nextLine();
 		
 		// TODO Revise to account for "/quit" as second argument
-		
-		for(String s : pArray){
+
+		ArrayList<String> splitWords = new ArrayList<String>();
+		String[] temp = pArray.split(" ");
+		splitWords.add(temp[0]);
+		splitWords.add(temp[1]);
+
+		for(String s : splitWords){
 			if(s.equals("/quit")){
 				//return new ArrayList<String>();
 				System.exit(0);
 			}
-			else{
-				break;
-			}
 		}
-		
-		ArrayList<String> splitWords = new ArrayList<String>();
-		String[] temp = pArray.get(0).split(" ");
-		splitWords.add(temp[0]);
-		words[0] = temp[0];
-		splitWords.add(temp[1]);
-		words[1] = temp[1];
 		
 		return splitWords;
 	}
