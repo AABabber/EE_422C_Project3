@@ -46,7 +46,7 @@ public class Main {
 		
 		ArrayList<String> words = parse(kb);
 		ArrayList<String> wordLadder = getWordLadderBFS(words.get(0), words.get(1));
-		//printLadder(wordLadder);
+		printLadder(wordLadder);
 		
 	}
 	
