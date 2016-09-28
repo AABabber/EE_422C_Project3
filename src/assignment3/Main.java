@@ -201,8 +201,9 @@ public class Main {
 			 * using the copyOf() method creates a "deep copy"
 			 */
 			tempStr = Arrays.copyOf(word, word.length);
-			for(int j = 0; j < alphabet.length; j++){
-				tempStr[i] = alphabet[j];
+			//A better way to iterate over the alphabet!!
+			for(char j = 'a'; j < 'z'; j++){
+				tempStr[i] = "" + j;
 				StringBuilder permut = new StringBuilder();
 				for(String letter: tempStr) {
 					permut.append(letter);
