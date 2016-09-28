@@ -23,10 +23,10 @@ public class Node {
 	private Node previousNode;	// Parent of this instance
 	private List<Node> nextList;	// List of Nodes with words that differ from this one by one letter
 	
-	public Node(String word) 
+	public Node(String word, Node prev)
 	{
 		this.setWord(word);
-		this.setPreviousNode(null);
+		this.setPreviousNode(prev);
 		nextList = new ArrayList<Node>();	// Using private variable rather than setter for clarity
 	}
 	
