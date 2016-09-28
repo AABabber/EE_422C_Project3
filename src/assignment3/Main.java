@@ -20,9 +20,10 @@ import java.io.*;
 public class Main {
 
 	// Constants and static variables
-	public static String[] alphabet  = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+	public static String[] alphabet;
 	// TODO Appropriate way to store input? (see @194 & @204)
-	public static String[] words = {"",""};
+	public static String[] words;
+	public static HashMap<String, HashSet<String>> linkedDict;
 
 	public static void main(String[] args) throws Exception 
 	{
@@ -55,8 +56,10 @@ public class Main {
 	 */
 	public static void initialize() 
 	{
-		// alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-		// words = new String[2];
+		// TODO Check if initializations hold for multiple instances
+		alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+		words = new String[2];
+		constructLinkedDict();
 	}
 
 	/**
@@ -121,8 +124,8 @@ public class Main {
 		// Initialization 
 		Set<String> dict = makeDictionary();
 		Set<String> encounteredWords = new HashSet<String>();
-		Queue<Node> q = new LinkedList<Node>();
-		Node wordTreeRoot = new Node(start.toUpperCase(), null);
+		//Queue<Node> q = new LinkedList<Node>();
+		//Node wordTreeRoot = new Node(start.toUpperCase(), null);
 		ArrayList<String> emptyLadder = new ArrayList<String>();
 		
 		// Return empty ladder if start and end are the same word
@@ -130,17 +133,11 @@ public class Main {
 			return emptyLadder;
 		}
 		
-		q.add(wordTreeRoot);	// Add start to queue so loop condition doesn't fail
-		encounteredWords.add(wordTreeRoot.getWord());
-		Node current;
+		// TODO IMPLEMENT BFS A DIFFERENT WAY
 		
-		while(!q.isEmpty()) {
-			current = q.remove();
-			if (current.getWord().equals(end.toUpperCase())) {
-				return treeToLadder(current);		// Build ladder as ArrayList and return
-			}
-			permutations(dict, encounteredWords, q, current);	// Updates queue and current node connections
-		}
+			// Code...
+		
+		// TODO IMPLEMENT BFS A DIFFERENT WAY
 		
 		// If there is no ladder, we return an empty list.
 		return emptyLadder;
@@ -153,8 +150,8 @@ public class Main {
 		
 		// TODO Move dictionaries?
 		try {
-			infile = new Scanner (new File(Main.class.getResource("five_letter_words.txt").getPath()));
-			//infile = new Scanner (new File("five_letter_words.txt"));
+			//infile = new Scanner (new File(Main.class.getResource("five_letter_words.txt").getPath()));
+			infile = new Scanner (new File("five_letter_words.txt"));
 		} catch (FileNotFoundException e) {
 			System.out.println("Dictionary File not Found!");
 			e.printStackTrace();
@@ -195,6 +192,7 @@ public class Main {
 	// ----------------------------------- private static methods ----------------------------------- //
 	
 	
+	// TODO DO NOT USE -- TOO INEFFICIENT
 	private static void permutations(Set<String> dict, Set<String> encountered, Queue<Node> q, Node n)
 	{
 		String[] word = n.getWord().toUpperCase().split("");
@@ -227,6 +225,50 @@ public class Main {
 
 	}
 	
+	private static HashSet<String> dictPermutations(Set<String> dict, String word)
+	{
+		String[] wordArray = word.toUpperCase().split("");
+		String[] tempStrArray = new String[wordArray.length];
+		HashSet<String> entry = new HashSet<String>();
+
+		for(int i = 0; i < wordArray.length; i++){
+			/* 'tempStr = word' would be a "shallow copy"
+			 * using the copyOf() method creates a "deep copy"
+			 */
+			tempStrArray = Arrays.copyOf(wordArray, wordArray.length);
+			
+			for(int j = 0; j < alphabet.length; j++){
+				tempStrArray[i] = alphabet[j];
+				StringBuilder permut = new StringBuilder();
+				
+				for(String letter : tempStrArray) {
+					permut.append(letter);
+				}
+				String finalPermut = permut.toString();
+				
+				if(dict.contains(finalPermut)){
+					entry.add(finalPermut);
+				}
+
+			}
+
+		}
+		
+		return entry;
+	}
+	
+	private static void constructLinkedDict()
+	{
+		linkedDict = new HashMap<String, HashSet<String>>();
+		Set<String> dict = makeDictionary();
+		for (String word : dict) {
+			HashSet<String> entry = dictPermutations(dict, word);
+			linkedDict.put(word, entry);
+		}
+		
+		return;
+	}
+	
 	private static ArrayList<String> treeToLadder(Node end) 
 	{
 		ArrayList<String> wordLadder = new ArrayList<String>();
@@ -244,5 +286,6 @@ public class Main {
 		
 		return wordLadder;
 	}
+	
 	
 }
