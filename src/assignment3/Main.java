@@ -90,7 +90,7 @@ public class Main {
 		Set<String> dict = makeDictionary();
 		Set<String> encountered = new HashSet<String>();
 		Queue<Node> q = new LinkedList();
-		Node wordTreeRoot = new Node(start);
+		Node wordTreeRoot = new Node(start, null);
 		
 		// Add start to queue so while loop condition doesn't fail
 		q.add(wordTreeRoot);
@@ -135,8 +135,8 @@ public class Main {
 
 	}
 	
-	// TODO
-	// Other private static methods here
+	
+	// ----------------------------------- Private Static Methods ----------------------------------- //
 
 	private static void permutations(Set<String> dict, Set<String> encountered, Queue<Node> q, Node n){
 		String[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
@@ -157,8 +157,15 @@ public class Main {
 		ArrayList<String> wordLadder = new ArrayList<String>();
 		Node current = end;
 		while (current.getPreviousNode() != null) {
-			
+			wordLadder.add(current.getWord());
+			current = end.getPreviousNode();
 		}
+		
+		// Adds the first word as it doesn't get done in while loop
+		wordLadder.add(current.getWord());	
+		
+		// Puts word ladder in proper order 
+		Collections.reverse(wordLadder);
 		
 		return wordLadder;
 	}
