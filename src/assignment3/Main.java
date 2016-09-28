@@ -46,7 +46,7 @@ public class Main {
 		
 		ArrayList<String> words = parse(kb);
 		ArrayList<String> wordLadder = getWordLadderBFS(words.get(0), words.get(1));
-		printLadder(wordLadder);
+		//printLadder(wordLadder);
 		
 	}
 	
@@ -122,9 +122,6 @@ public class Main {
 		// Initialization 
 		Set<String> encounteredWords = new HashSet<String>();
 		Queue<String> q = new LinkedList<String>();
-		
-		/*Node wordTreeRoot = new Node(start.toUpperCase(), null);*/
-		
 		ArrayList<String> emptyLadder = new ArrayList<String>();
 		ArrayList<String> workingLadder = new ArrayList<String>();
 		workingLadder.add(start.toUpperCase());
@@ -134,10 +131,7 @@ public class Main {
 			return emptyLadder;
 		}
 		
-		// Set values to pass initial loop conditions
-		
-		/* Node current; */
-		
+		// Set values to pass initial loop conditions		
 		q.add(start.toUpperCase());
 		encounteredWords.add(start.toUpperCase());
 		
@@ -176,9 +170,8 @@ public class Main {
 		Set<String> words = new HashSet<String>();
 		Scanner infile = null;
 		
-		// TODO Move dictionaries?
+		// TODO Verify Scanner initialization and file placement
 		try {
-			// infile = new Scanner (new File(Main.class.getResource("five_letter_words.txt").getPath()));
 			infile = new Scanner (new File("five_letter_words.txt"));
 		} catch (FileNotFoundException e) {
 			System.out.println("Dictionary File not Found!");
@@ -278,25 +271,6 @@ public class Main {
 		return;
 	}
 	
-	/*
-	private static ArrayList<String> treeToLadder(Node end) 
-	{
-		ArrayList<String> wordLadder = new ArrayList<String>();
-		Node current = end;
-		while (current.getPreviousNode() != null) {
-			wordLadder.add(current.getWord());
-			current = end.getPreviousNode();
-		}
-		
-		// Adds the first word as that doesn't get done in the while loop
-		wordLadder.add(current.getWord());	
-		
-		// Puts word ladder in proper order 
-		Collections.reverse(wordLadder);
-		
-		return wordLadder;
-	}
-	*/
-	
+	// TODO Write more methods
 	
 }
