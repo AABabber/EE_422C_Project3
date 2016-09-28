@@ -14,6 +14,9 @@
 
 package assignment3;
 import java.util.*;
+
+import assignment2.GameConfiguration;
+
 import java.io.*;
 
 public class Main {
@@ -56,19 +59,22 @@ public class Main {
 	 * If command is /quit, return empty ArrayList.
 	 */
 	public static ArrayList<String> parse(Scanner keyboard) 
-	{
+	{	
+		
+		// TODO Revise 
+		
 		ArrayList<String> pArray = new ArrayList<String>();
+		pArray.add(keyboard.nextLine());
 
-		while(pArray.add(keyboard.nextLine())){}
-
-		for(String s: pArray){
-			if(s.equals("quit")){
+		for(String s : pArray){
+			if(s.equals("/quit")){
 				return new ArrayList<String>();
 			}
 			else{
 				break;
 			}
 		}
+		
 		ArrayList<String> splitWords = new ArrayList<String>();
 		String[] temp = pArray.get(0).split(" ");
 		splitWords.add(temp[0]);
