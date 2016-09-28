@@ -56,7 +56,7 @@ public class Main {
 	{
 		ArrayList<String> pArray = new ArrayList<String>();
 
-		while(pArray.add(keyboard.next())){}
+		while(pArray.add(keyboard.nextLine())){}
 
 		for(String s: pArray){
 			if(s.equals("quit")){
@@ -66,7 +66,11 @@ public class Main {
 				break;
 			}
 		}
-		return pArray;
+		ArrayList<String> splitWords = new ArrayList<String>();
+		String[] temp = pArray.get(0).split(" ");
+		splitWords.add(temp[0]);
+		splitWords.add(temp[1]);
+		return splitWords;
 	}
 
 	public static ArrayList<String> getWordLadderDFS(String start, String end) 
@@ -133,6 +137,20 @@ public class Main {
 	
 	// TODO
 	// Other private static methods here
+
+	private static void permutations(Set<String> dict, Set<String> encountered, Queue<Node> q, Node n){
+		String[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+		String[] word = n.getWord().toUpperCase().split("");
+		String[] tempStr;
+		List<Node> temp = n.getNextList();
+		for(int i = 0; i < word.length; i ++){
+			for(int j = 0; j < alphabet.length; j ++){
+				tempStr = word;
+			}
+
+		}
+
+	}
 	
 	private static ArrayList<String> treeToLadder(Node end) 
 	{
