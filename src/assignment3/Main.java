@@ -18,7 +18,8 @@ import java.io.*;
 
 public class Main {
 
-	// static variables and constants only here.
+	// Constants and static variables
+	public static String[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
 	public static void main(String[] args) throws Exception 
 	{
@@ -48,6 +49,8 @@ public class Main {
 	}
 
 	/**
+	 * Parses user input
+	 * 
 	 * @param keyboard Scanner connected to System.in
 	 * @return ArrayList of 2 Strings containing start word and end word.
 	 * If command is /quit, return empty ArrayList.
@@ -91,32 +94,35 @@ public class Main {
 		Set<String> encountered = new HashSet<String>();
 		Queue<Node> q = new LinkedList<Node>();
 		Node wordTreeRoot = new Node(start, null);
+		ArrayList<String> emptyLadder = new ArrayList<String>();
+		
+		// Return empty ladder if start and end are the same word
+		if (start.equals(end)) {
+			return emptyLadder;
+		}
 		
 		q.add(wordTreeRoot);	// Add start to queue so loop condition doesn't fail
 		encountered.add(start);
 		Node current;
-		while(!q.isEmpty()) {
-			
-			current = q.remove();
-			
-			if (current.getWord().equals(end)) {
-				
-				// Build ladder as ArrayList
-				// Return ladder
-				
-			}
 		
-			// for loop for each 1-letter permutation
-			
+		while(!q.isEmpty()) {
+			current = q.remove();
+			if (current.getWord().equals(end)) {
+				return treeToLadder(current);		// Build ladder as ArrayList and return
+			}
+			permutations(dict, encountered, q, current);	// Updates queue and current node connections
 		}
 		
-		return null; // TODO Replace this line later with real return
+		// If there is no ladder, we return an empty list.
+		return emptyLadder;
 	}
 
-	public static Set<String>  makeDictionary() 
+	public static Set<String> makeDictionary() 
 	{
 		Set<String> words = new HashSet<String>();
 		Scanner infile = null;
+		
+		// TODO Move dictionaries into assignment3 package
 		try {
 			infile = new Scanner (new File("five_letter_words.txt"));
 		} catch (FileNotFoundException e) {
@@ -124,9 +130,11 @@ public class Main {
 			e.printStackTrace();
 			System.exit(1);
 		}
+		
 		while (infile.hasNext()) {
 			words.add(infile.next().toUpperCase());
 		}
+		
 		return words;
 	}
 
@@ -136,11 +144,11 @@ public class Main {
 	}
 	
 	
-	// ----------------------------------- Private Static Methods ----------------------------------- //
-
+	// ----------------------------------- private static methods ----------------------------------- //
+	
+	
 	private static void permutations(Set<String> dict, Set<String> encountered, Queue<Node> q, Node n)
 	{
-		String[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 		String[] word = n.getWord().toUpperCase().split("");
 		String[] tempStr = new String[word.length];
 
