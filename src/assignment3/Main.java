@@ -54,8 +54,19 @@ public class Main {
 	 */
 	public static ArrayList<String> parse(Scanner keyboard) 
 	{
-		// TO DO
-		return null;
+		ArrayList<String> pArray = new ArrayList<String>();
+
+		while(pArray.add(keyboard.next())){}
+
+		for(String s: pArray){
+			if(s.equals("quit") || s.equals("exit")){
+				return new ArrayList<String>();
+			}
+			else{
+				break;
+			}
+		}
+		return pArray;
 	}
 
 	public static ArrayList<String> getWordLadderDFS(String start, String end) 
