@@ -1,11 +1,11 @@
-/* WORD LADDER Main.java
+/* WORD LADDER Node.java
  * EE422C Project 3 submission by
  * Replace <...> with your actual data.
  * Ali Ziyaan Momin
  * AZM259
  * 16470
  * Aaron Babber
- * aab3456
+ * AAB3456
  * 16480
  * Slip days used: 0
  * Git URL: https://github.com/AABabber/EE_422C_Project3.git
@@ -14,19 +14,20 @@
 
 package assignment3;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Node {
 	
-	private String word;	// Data stored in this instance
+	private String word;	// Data stored in this Node instance
 	private Node previousNode;	// Parent of this instance
 	private List<Node> nextList;	// List of Nodes with words that differ from this one by one letter
 	
 	public Node(String word) 
 	{
-		
-		// TODO Write constructor
-		
+		this.setWord(word);
+		this.setPreviousNode(null);
+		nextList = new ArrayList<Node>();	// Using private variable rather than setter for clarity
 	}
 	
 	// ----------------------------------- Getter & Setter Methods ----------------------------------- //
@@ -56,7 +57,7 @@ public class Node {
 	 * 
 	 * @return reference to the previous (or parent) Node
 	 */
-	public Node getPrevious() 
+	public Node getPreviousNode() 
 	{
 		return previousNode;
 	}
@@ -66,7 +67,7 @@ public class Node {
 	 * 
 	 * @param previousNode is the reference to the previous (or parent) Node
 	 */
-	public void setPrevious(Node previousNode) 
+	public void setPreviousNode(Node previousNode) 
 	{
 		this.previousNode = previousNode;
 	}
@@ -91,5 +92,4 @@ public class Node {
 		this.nextList = nextList;
 	}
 	
-
 }

@@ -5,7 +5,7 @@
  * AZM259
  * 16470
  * Aaron Babber
- * aab3456
+ * AAB3456
  * 16480
  * Slip days used: 0
  * Git URL: https://github.com/AABabber/EE_422C_Project3.git
@@ -73,7 +73,11 @@ public class Main {
     public static ArrayList<String> getWordLadderBFS(String start, String end) 
     {
 
-		// TODO Write BFS
+		// Initialize a Queue using a LinkedList
+    	
+    	// Initialize a Set using HashSet for encountered words
+    	
+    	// Initialize a Node for use with the start word
     	
 		Set<String> dict = makeDictionary();
 		
@@ -102,8 +106,8 @@ public class Main {
 	{
 
 	}
+	
 	// TODO
 	// Other private static methods here
-	
 	
 }
