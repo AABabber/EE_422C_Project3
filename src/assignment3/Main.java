@@ -59,7 +59,7 @@ public class Main {
 		while(pArray.add(keyboard.next())){}
 
 		for(String s: pArray){
-			if(s.equals("quit") || s.equals("exit")){
+			if(s.equals("quit")){
 				return new ArrayList<String>();
 			}
 			else{
@@ -133,5 +133,16 @@ public class Main {
 	
 	// TODO
 	// Other private static methods here
+	
+	private static ArrayList<String> treeToLadder(Node end) 
+	{
+		ArrayList<String> wordLadder = new ArrayList<String>();
+		Node current = end;
+		while (current.getPreviousNode() != null) {
+			
+		}
+		
+		return wordLadder;
+	}
 	
 }
