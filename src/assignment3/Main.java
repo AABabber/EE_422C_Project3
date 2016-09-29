@@ -39,13 +39,26 @@ public class Main {
 			ps = System.out;				// default to Stdout
 		}
 		
+		
+		
+		
+		//long time1 = System.nanoTime();		// TODO Delete this
 		initialize();
+		//long time2 = System.nanoTime();		// TODO Delete this
 
 		//  Methods to read in words, output ladder
 		
 		ArrayList<String> words = parse(kb);
+		
+		//long time3 = System.nanoTime();		// TODO Delete this
 		ArrayList<String> wordLadder = getWordLadderBFS(words.get(0), words.get(1));
 		printLadder(wordLadder);
+		//long time4 = System.nanoTime();		// TODO Delete this
+		
+		//System.out.println("initialize: " + (time2 - time1) + " ns");		// TODO Delete this
+		//System.out.println("BFS & printLadder: " + (time4 - time3) + " ns");		// TODO Delete this
+		
+		return;
 	}
 	
 	/**
@@ -138,7 +151,6 @@ public class Main {
 			HashSet<String> linkedValues = linkedDict.get(current);
 			
 			if (linkedValues.contains(end.toUpperCase())) {
-				System.out.println("TRUE - BFS");	// TODO Delete this
 				parentMap.put(end.toUpperCase(), current.toUpperCase());
 				return parentMapToLadder(parentMap, end.toUpperCase());
 			}
@@ -148,7 +160,6 @@ public class Main {
 			
 		}
 		
-		System.out.println("FALSE - BFS");		// TODO Delete this
 		// If there is no ladder, we return an empty list.
 		return emptyLadder;	
 	}
