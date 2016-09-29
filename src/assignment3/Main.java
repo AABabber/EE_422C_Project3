@@ -107,6 +107,7 @@ public class Main {
 	     */
 	    String[] commands = input.split("\\s+");
 	    ArrayList<String> splitWords;
+		String[] temp;
 
 	    if (commands.length < 1) {
 	        System.exit(1);
@@ -118,6 +119,12 @@ public class Main {
 	            System.exit(0);
 	        }
 	    }
+
+		if(commands.length == 1){
+			String input2 = keyboard.nextLine();
+			temp = input2.split("\\s+");
+			splitWords.add(temp[0]);
+		}
 
 	    words[0] = splitWords.get(0);
 	    words[1] = splitWords.get(1);
