@@ -55,20 +55,22 @@ public class Main {
 
 		//long time3 = System.nanoTime();		// TODO Delete this
 		ArrayList<String> words = parse(kb);
-		//ArrayList<String> wordLadder = getWordLadderBFS(words.get(0), words.get(1));
-		//printLadder(wordLadder);
+		System.out.println("\n\nBFS Ladder:");
+		ArrayList<String> wordLadder = getWordLadderBFS(words.get(0), words.get(1));
+		printLadder(wordLadder);
 		
 		//long time4 = System.nanoTime();		// TODO Delete this
 
 		//System.out.println("initialize: " + (time2 - time1) + " ns");		// TODO Delete this
 		//System.out.println("BFS & printLadder: " + (time4 - time3) + " ns");		// TODO Delete this
 
-		long time3 = System.nanoTime();
-		ArrayList<String> wordLadder = getWordLadderDFS(words.get(0), words.get(1));
-		printLadder(wordLadder);
-		long time4 = System.nanoTime();
+		//long time3 = System.nanoTime();
+		System.out.println("\n\nDFS Ladder:");
+		ArrayList<String> wLadder = getWordLadderDFS(words.get(0), words.get(1));
+		printLadder(wLadder);
+		//long time4 = System.nanoTime();(time4 - time3)+
 
-		System.out.println("DFS/print/init: " + ((time4 - time3)+(time2 - time1)) + " ns");
+		System.out.println("DFS/print/init: " + ((time2 - time1)) + " ns");
 
 		
 		return;
@@ -134,17 +136,12 @@ public class Main {
 
 		ladder.clear();
 		visited.clear();
-		if(DFS(words[0], words[1])){
-			System.out.println("true");
-			ladder.add(start);
-			Collections.reverse(ladder);
-		}
-		else{
-			System.out.println("false");
-		}
 
+		DFS(words[0], words[1]);
+		ladder.add(start);
+		Collections.reverse(ladder);
 
-		return ladder; // TODO Replace this line later with real return
+		return ladder;
 	}
 
     public static ArrayList<String> getWordLadderBFS(String start, String end) 
