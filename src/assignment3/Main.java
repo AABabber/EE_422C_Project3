@@ -141,7 +141,7 @@ public class Main {
 
 		ladder.clear();
 		visited.clear();
-		if(find(words[0], words[1])){
+		if(DFS(words[0], words[1])){
 			System.out.println("true");
 			ladder.add(start);
 			Collections.reverse(ladder);
@@ -317,41 +317,9 @@ public class Main {
 		return wordLadder;
 	}
 
-	private static boolean myDFS(String start, String end, Set<String> dict, Set<String> visited){
-		visited.add(start);
-
-		for(int i = 0; i < start.length(); i++){
-			StringBuilder sb = new StringBuilder(start);
-			for(char ch = 'A'; ch <= 'Z'; ch ++){
-				if(start.charAt(i) == ch){
-					continue;
-				}
-				sb.setCharAt(i, ch);
-				String word = sb.toString();
-				if(word.equals(end)){
-					System.out.println(word);
-					//ladder.add(word);
-					return true;
-				}
-				else if(dict.contains(word) && !visited.contains(word)){
-					boolean found = myDFS(word, end, dict, visited);
-					if(found){
-						//
-						System.out.println(word);
-						//ladder.add(word);
-						return true;
-					}
-
-					//System.out.println(word);
-
-				}
-			}
-		}
-		visited.remove(start);
-		return false;
-	}
-
-	private static boolean find(String start, String end){
+	//This is the new DFS that works with no overflows
+	//It makes use of the helper method below called closeDict
+	private static boolean DFS(String start, String end){
 		ArrayList<String> cDict = closeDict(start);
 		if(start.isEmpty()){
 			return false;
@@ -363,7 +331,7 @@ public class Main {
 		else{
 			for(String s: cDict){
 				if(!visited.contains(s)){
-					boolean found = find(s, end);
+					boolean found = DFS(s, end);
 					if(found){
 						ladder.add(s);
 						return true;
@@ -374,6 +342,9 @@ public class Main {
 		return false;
 	}
 
+
+	//This method takes a string and creates all of its permuts and checks them within
+	//dictionary and then returns all the permuts in an ArrayList
 	private static ArrayList<String> closeDict(String word){
 		ArrayList<String> cDictionary = new ArrayList<String>();
 		for(int i = 0; i < word.length(); i++){
