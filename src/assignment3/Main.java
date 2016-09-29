@@ -25,6 +25,7 @@ public class Main {
 	public static String[] words;
 	public static HashMap<String, HashSet<String>> linkedDict;
 
+
 	public static void main(String[] args) throws Exception 
 	{
 		Scanner kb;	// input Scanner for commands
@@ -47,16 +48,17 @@ public class Main {
 		//long time2 = System.nanoTime();		// TODO Delete this
 
 		//  Methods to read in words, output ladder
-		
-		ArrayList<String> words = parse(kb);
-		
+
 		//long time3 = System.nanoTime();		// TODO Delete this
-		ArrayList<String> wordLadder = getWordLadderBFS(words.get(0), words.get(1));
-		printLadder(wordLadder);
-		//long time4 = System.nanoTime();		// TODO Delete this
+		//ArrayList<String> words = parse(kb);
+		//ArrayList<String> wordLadder = getWordLadderBFS(words.get(0), words.get(1));
+		//printLadder(wordLadder);
 		
+		//long time4 = System.nanoTime();		// TODO Delete this
+
 		//System.out.println("initialize: " + (time2 - time1) + " ns");		// TODO Delete this
 		//System.out.println("BFS & printLadder: " + (time4 - time3) + " ns");		// TODO Delete this
+		getWordLadderDFS("START", "STATE");
 		
 		return;
 	}
@@ -120,6 +122,14 @@ public class Main {
 				
 		// TODO Write method
 		Set<String> dict = makeDictionary();
+		Set<String>	visited = new HashSet<String>();
+		ArrayList<String> ladder = new ArrayList<String>();
+		ladder.add(start);
+
+		if(myDFS(start, end, dict, visited, ladder)){
+			Collections.reverse(ladder);
+			printLadder(ladder);
+		}
 
 		return null; // TODO Replace this line later with real return
 	}
@@ -286,5 +296,39 @@ public class Main {
 		Collections.reverse(wordLadder);	// Put word ladder in proper order
 		return wordLadder;
 	}
-	
+
+	private static boolean myDFS(String start, String end, Set<String> dict, Set<String> visited, ArrayList<String> ladder){
+		visited.add(start);
+
+		for(int i = 0; i < start.length(); i++){
+			StringBuilder sb = new StringBuilder(start);
+			for(char ch = 'A'; ch <= 'Z'; ch ++){
+				if(start.charAt(i) == ch){
+					continue;
+				}
+				sb.setCharAt(i, ch);
+				String word = sb.toString();
+				if(word.equals(end)){
+					System.out.println(word);
+					//ladder.add(word);
+					return true;
+				}
+				else if(dict.contains(word) && !visited.contains(word)){
+					boolean found = myDFS(word, end, dict, visited, ladder);
+					if(found){
+						//
+						System.out.println(word);
+						//ladder.add(word);
+						return true;
+					}
+
+					//System.out.println(word);
+
+				}
+			}
+		}
+		visited.remove(start);
+		return false;
+	}
+
 }
