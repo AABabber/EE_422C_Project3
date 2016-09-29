@@ -28,7 +28,6 @@ public class Main {
 
 	public static void main(String[] args) throws Exception 
 	{
-
 		Scanner kb;	// input Scanner for commands
 		PrintStream ps;	// output file
 		// If arguments are specified, read/write from/to files instead of Std IO.
@@ -44,11 +43,12 @@ public class Main {
 		initialize();
 
 		//  Methods to read in words, output ladder
-		
+
 		//ArrayList<String> words = parse(kb);
 		//ArrayList<String> wordLadder = getWordLadderBFS(words.get(0), words.get(1));
 		//printLadder(wordLadder);
 		getWordLadderDFS("START", "STATE");
+
 	}
 	
 	/**
@@ -70,30 +70,33 @@ public class Main {
 	 * @return ArrayList of 2 Strings containing start word and end word.
 	 * If command is /quit, return empty ArrayList.
 	 */
-	public static ArrayList<String> parse(Scanner keyboard) 
-	{	
-		
-		// TODO Rewrite 
-		
-		String pArray = keyboard.nextLine();
-		
-		// TODO Revise to account for "/quit" as second argument
+	public static ArrayList<String> parse(Scanner keyboard)
+	{
+	    String input = keyboard.nextLine();
 
-		ArrayList<String> splitWords = new ArrayList<String>();
-		String[] temp = pArray.split(" ");
-		splitWords.add(temp[0]);
-		words[0] = temp[0];
-		splitWords.add(temp[1].toUpperCase());
-		words[1] = temp[1];
+	    /* Divides the input into its respective commands and stores
+	     * the results in an array. The regex "\\s+" splits the input String
+	     * using any whitespace character (the \\s part) as a delimiter. The '+'
+	     * character is a quantifier for "one or more times".
+	     */
+	    String[] commands = input.split("\\s+");
+	    ArrayList<String> splitWords;
 
-		for(String s : splitWords){
-			if(s.equals("/quit")){
-				//return new ArrayList<String>();
-				System.exit(0);
-			}
-		}
+	    if (commands.length < 1) {
+	        System.exit(1);
+	    }
 
-		return splitWords;
+	    splitWords = new ArrayList<String>(Arrays.asList(commands));
+	    for (String word : splitWords) {
+	        if (word.equals("/quit")) {
+	            System.exit(0);
+	        }
+	    }
+
+	    words[0] = splitWords.get(0);
+	    words[1] = splitWords.get(1);
+
+	    return splitWords;
 	}
 
 	public static ArrayList<String> getWordLadderDFS(String start, String end) 
@@ -106,7 +109,6 @@ public class Main {
 		// Return empty list if no ladder.
 				
 		// TODO Write method
-		
 		Set<String> dict = makeDictionary();
 		Set<String>	visited = new HashSet<String>();
 		ArrayList<String> ladder = new ArrayList<String>();
@@ -127,25 +129,39 @@ public class Main {
 		words[1] = end.toUpperCase();
 		
 		// Initialization 
-		Set<String> dict = makeDictionary();
 		Set<String> encounteredWords = new HashSet<String>();
-		//Queue<Node> q = new LinkedList<Node>();
-		//Node wordTreeRoot = new Node(start.toUpperCase(), null);
+		Queue<String> q = new LinkedList<String>();
 		ArrayList<String> emptyLadder = new ArrayList<String>();
+		Map<String, String> parentMap = new HashMap<String, String>();
 		
 		// Return empty ladder if start and end are the same word
-		if (start.equals(end)) {
+		if ((start.toUpperCase()).equals(end.toUpperCase())) {
 			return emptyLadder;
 		}
 		
-		// TODO IMPLEMENT BFS A DIFFERENT WAY
+		// Set values to pass initial loop conditions		
+		q.add(start.toUpperCase());
+		encounteredWords.add(start.toUpperCase());
 		
-			// Code...
+		while (!q.isEmpty()) {
+			
+			String current = q.remove();
+			HashSet<String> linkedValues = linkedDict.get(current);
+			
+			if (linkedValues.contains(end.toUpperCase())) {
+				System.out.println("TRUE - BFS");	// TODO Delete this
+				parentMap.put(end.toUpperCase(), current.toUpperCase());
+				return parentMapToLadder(parentMap, end.toUpperCase());
+			}
+			else {
+				update(encounteredWords, q, current, parentMap);
+			}
+			
+		}
 		
-		// TODO IMPLEMENT BFS A DIFFERENT WAY
-		
+		System.out.println("FALSE - BFS");		// TODO Delete this
 		// If there is no ladder, we return an empty list.
-		return emptyLadder;
+		return emptyLadder;	
 	}
 
 	public static Set<String> makeDictionary() 
@@ -153,9 +169,8 @@ public class Main {
 		Set<String> words = new HashSet<String>();
 		Scanner infile = null;
 		
-		// TODO Move dictionaries?
+		// TODO Verify Scanner initialization and file placement
 		try {
-			//infile = new Scanner (new File(Main.class.getResource("five_letter_words.txt").getPath()));
 			infile = new Scanner (new File("five_letter_words.txt"));
 		} catch (FileNotFoundException e) {
 			System.out.println("Dictionary File not Found!");
@@ -170,8 +185,7 @@ public class Main {
 		return words;
 	}
 	
-	// TODO Determine if this method will be called independently of parse() (see @194 & @204)
-	// If so, we must update the words array in each search function.
+	// TODO Double check @194 & @204
 	public static void printLadder(ArrayList<String> ladder) 
 	{
 		// All output must be in lower case
@@ -197,39 +211,21 @@ public class Main {
 	// ----------------------------------- private static methods ----------------------------------- //
 	
 	
-	// TODO DO NOT USE -- TOO INEFFICIENT
-	private static void permutations(Set<String> dict, Set<String> encountered, Queue<Node> q, Node n)
+	private static void update(Set<String> encountered, Queue<String> q, String current, Map<String, String> parentMap)
 	{
-		String[] word = n.getWord().toUpperCase().split("");
-		String[] tempStr = new String[word.length];
-
-		List<Node> placeholder = n.getNextList();
-		for(int i = 0; i < word.length; i++){
-			/* 'tempStr = word' would be a "shallow copy"
-			 * using the copyOf() method creates a "deep copy"
-			 */
-			tempStr = Arrays.copyOf(word, word.length);
-			//A better way to iterate over the alphabet!!
-			for(char j = 'a'; j < 'z'; j++){
-				tempStr[i] = "" + j;
-				StringBuilder permut = new StringBuilder();
-				for(String letter: tempStr) {
-					permut.append(letter);
-				}
-				String finalPermut = permut.toString();
-
-				if(dict.contains(finalPermut) && !encountered.contains(finalPermut)){
-					encountered.add(finalPermut);
-					Node temp = new Node(finalPermut, n);
-					placeholder.add(temp);
-					q.add(temp);
-				}
-
+		HashSet<String> linkedEntries = linkedDict.get(current);
+		
+		for (String word : linkedEntries) {
+			if (!encountered.contains(word.toUpperCase())) {
+				q.add(word.toUpperCase());
+				encountered.add(word.toUpperCase());
+				parentMap.put(word.toUpperCase(), current.toUpperCase());
 			}
-
 		}
-
+		
+		return;
 	}
+	
 	
 	private static HashSet<String> dictPermutations(Set<String> dict, String word)
 	{
@@ -237,20 +233,20 @@ public class Main {
 		String[] tempStrArray = new String[wordArray.length];
 		HashSet<String> entry = new HashSet<String>();
 
-		for(int i = 0; i < wordArray.length; i++){
+		for (int i = 0; i < wordArray.length; i++){
 			/* 'tempStr = word' would be a "shallow copy"
 			 * using the copyOf() method creates a "deep copy"
 			 */
 			tempStrArray = Arrays.copyOf(wordArray, wordArray.length);
 			
-			for(int j = 0; j < alphabet.length; j++){
+			for (int j = 0; j < alphabet.length; j++){
 				tempStrArray[i] = alphabet[j];
 				StringBuilder permut = new StringBuilder();
 				
-				for(String letter : tempStrArray) {
+				for (String letter : tempStrArray) {
 					permut.append(letter);
 				}
-				String finalPermut = permut.toString();
+				String finalPermut = permut.toString().toUpperCase();
 				
 				if(dict.contains(finalPermut)){
 					entry.add(finalPermut);
@@ -267,29 +263,27 @@ public class Main {
 	{
 		linkedDict = new HashMap<String, HashSet<String>>();
 		Set<String> dict = makeDictionary();
+		
 		for (String word : dict) {
 			HashSet<String> entry = dictPermutations(dict, word);
-			linkedDict.put(word, entry);
+			linkedDict.put(word.toUpperCase(), entry);
 		}
 		
 		return;
 	}
 	
-	private static ArrayList<String> treeToLadder(Node end) 
+	private static ArrayList<String> parentMapToLadder(Map<String, String> parentMap, String lastWord)
 	{
 		ArrayList<String> wordLadder = new ArrayList<String>();
-		Node current = end;
-		while (current.getPreviousNode() != null) {
-			wordLadder.add(current.getWord());
-			current = end.getPreviousNode();
+		wordLadder.add(lastWord.toUpperCase());
+		
+		while (!wordLadder.contains(words[0].toUpperCase())) {
+			String child = wordLadder.get(wordLadder.size() - 1);
+			String parent = parentMap.get(child);
+			wordLadder.add(parent.toUpperCase());
 		}
 		
-		// Adds the first word as that doesn't get done in the while loop
-		wordLadder.add(current.getWord());	
-		
-		// Puts word ladder in proper order 
-		Collections.reverse(wordLadder);
-		
+		Collections.reverse(wordLadder);	// Put word ladder in proper order
 		return wordLadder;
 	}
 
@@ -326,6 +320,5 @@ public class Main {
 		visited.remove(start);
 		return false;
 	}
-
 
 }
