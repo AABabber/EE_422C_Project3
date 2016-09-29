@@ -137,8 +137,9 @@ public class Main {
 		ladder.clear();
 		visited.clear();
 
-		DFS(words[0], words[1]);
-		ladder.add(start);
+		if(DFS(words[0], words[1])) {
+			ladder.add(start);
+		}
 		Collections.reverse(ladder);
 
 		return ladder;
