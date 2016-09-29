@@ -70,8 +70,6 @@ public class Main {
 
 		System.out.println("DFS/print/init: " + ((time4 - time3)+(time2 - time1)) + " ns");
 
-
-		//getWordLadderDFS("START", "STATE");
 		
 		return;
 	}
@@ -133,11 +131,6 @@ public class Main {
 		
 		// Returned list should be ordered start to end.  Include start and end.
 		// Return empty list if no ladder.
-				
-		// TODO Write method
-		//Set<String> dict = makeDictionary();
-		//Set<String>	visited = new HashSet<String>();
-		//ArrayList<String> result = new ArrayList<String>();
 
 		ladder.clear();
 		visited.clear();
@@ -317,8 +310,10 @@ public class Main {
 		return wordLadder;
 	}
 
-	//This is the new DFS that works with no overflows
-	//It makes use of the helper method below called closeDict
+	/**
+	 * This is the new DFS that works with no overflows
+	 * It makes use of the helper method below called closeDict
+	 */
 	private static boolean DFS(String start, String end){
 		ArrayList<String> cDict = closeDict(start);
 		if(start.isEmpty()){
@@ -343,8 +338,10 @@ public class Main {
 	}
 
 
-	//This method takes a string and creates all of its permuts and checks them within
-	//dictionary and then returns all the permuts in an ArrayList
+	/**
+	 * This method takes a string and creates all of its permuts and checks them within
+	 * dictionary and then returns all the permuts in an ArrayList
+	 */
 	private static ArrayList<String> closeDict(String word){
 		ArrayList<String> cDictionary = new ArrayList<String>();
 		for(int i = 0; i < word.length(); i++){
