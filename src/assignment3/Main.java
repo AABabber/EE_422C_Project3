@@ -14,6 +14,7 @@
 
 package assignment3;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.io.*;
 
@@ -24,6 +25,9 @@ public class Main {
 	// TODO Appropriate way to store input? (see @194 & @204)
 	public static String[] words;
 	public static HashMap<String, HashSet<String>> linkedDict;
+	public static ArrayList<String> ladder = new ArrayList<>();
+	public static Set<String> visited = new HashSet<String>();
+	public static Set<String> dict;
 
 
 	public static void main(String[] args) throws Exception 
@@ -43,14 +47,14 @@ public class Main {
 		
 		
 		
-		//long time1 = System.nanoTime();		// TODO Delete this
+		long time1 = System.nanoTime();		// TODO Delete this
 		initialize();
-		//long time2 = System.nanoTime();		// TODO Delete this
+		long time2 = System.nanoTime();		// TODO Delete this
 
 		//  Methods to read in words, output ladder
 
 		//long time3 = System.nanoTime();		// TODO Delete this
-		//ArrayList<String> words = parse(kb);
+		ArrayList<String> words = parse(kb);
 		//ArrayList<String> wordLadder = getWordLadderBFS(words.get(0), words.get(1));
 		//printLadder(wordLadder);
 		
@@ -58,7 +62,16 @@ public class Main {
 
 		//System.out.println("initialize: " + (time2 - time1) + " ns");		// TODO Delete this
 		//System.out.println("BFS & printLadder: " + (time4 - time3) + " ns");		// TODO Delete this
-		getWordLadderDFS("START", "STATE");
+
+		long time3 = System.nanoTime();
+		ArrayList<String> wordLadder = getWordLadderDFS(words.get(0), words.get(1));
+		printLadder(wordLadder);
+		long time4 = System.nanoTime();
+
+		System.out.println("DFS/print/init: " + ((time4 - time3)+(time2 - time1)) + " ns");
+
+
+		//getWordLadderDFS("START", "STATE");
 		
 		return;
 	}
@@ -73,6 +86,7 @@ public class Main {
 		alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 		words = new String[2];
 		constructLinkedDict();
+		dict = makeDictionary();
 	}
 
 	/**
@@ -121,17 +135,23 @@ public class Main {
 		// Return empty list if no ladder.
 				
 		// TODO Write method
-		Set<String> dict = makeDictionary();
-		Set<String>	visited = new HashSet<String>();
-		ArrayList<String> ladder = new ArrayList<String>();
-		ladder.add(start);
+		//Set<String> dict = makeDictionary();
+		//Set<String>	visited = new HashSet<String>();
+		//ArrayList<String> result = new ArrayList<String>();
 
-		if(myDFS(start, end, dict, visited, ladder)){
+		ladder.clear();
+		visited.clear();
+		if(find(words[0], words[1])){
+			System.out.println("true");
+			ladder.add(start);
 			Collections.reverse(ladder);
-			printLadder(ladder);
+		}
+		else{
+			System.out.println("false");
 		}
 
-		return null; // TODO Replace this line later with real return
+
+		return ladder; // TODO Replace this line later with real return
 	}
 
     public static ArrayList<String> getWordLadderBFS(String start, String end) 
@@ -297,7 +317,7 @@ public class Main {
 		return wordLadder;
 	}
 
-	private static boolean myDFS(String start, String end, Set<String> dict, Set<String> visited, ArrayList<String> ladder){
+	private static boolean myDFS(String start, String end, Set<String> dict, Set<String> visited){
 		visited.add(start);
 
 		for(int i = 0; i < start.length(); i++){
@@ -314,7 +334,7 @@ public class Main {
 					return true;
 				}
 				else if(dict.contains(word) && !visited.contains(word)){
-					boolean found = myDFS(word, end, dict, visited, ladder);
+					boolean found = myDFS(word, end, dict, visited);
 					if(found){
 						//
 						System.out.println(word);
@@ -329,6 +349,47 @@ public class Main {
 		}
 		visited.remove(start);
 		return false;
+	}
+
+	private static boolean find(String start, String end){
+		ArrayList<String> cDict = closeDict(start);
+		if(start.isEmpty()){
+			return false;
+		}
+		visited.add(start);
+		if(start.equals(end)){
+			return true;
+		}
+		else{
+			for(String s: cDict){
+				if(!visited.contains(s)){
+					boolean found = find(s, end);
+					if(found){
+						ladder.add(s);
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	private static ArrayList<String> closeDict(String word){
+		ArrayList<String> cDictionary = new ArrayList<String>();
+		for(int i = 0; i < word.length(); i++){
+			StringBuilder sb = new StringBuilder(word);
+			for(char ch = 'A'; ch <= 'Z'; ch++){
+				if(word.charAt(i) == ch){
+					continue;
+				}
+				sb.setCharAt(i, ch);
+				String newWord = sb.toString();
+				if(dict.contains(newWord)){
+					cDictionary.add(newWord);
+				}
+			}
+		}
+		return cDictionary;
 	}
 
 }
