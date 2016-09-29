@@ -27,7 +27,6 @@ public class Main {
 
 	public static void main(String[] args) throws Exception 
 	{
-
 		Scanner kb;	// input Scanner for commands
 		PrintStream ps;	// output file
 		// If arguments are specified, read/write from/to files instead of Std IO.
@@ -46,8 +45,7 @@ public class Main {
 		
 		ArrayList<String> words = parse(kb);
 		ArrayList<String> wordLadder = getWordLadderBFS(words.get(0), words.get(1));
-		//printLadder(wordLadder);
-		
+		printLadder(wordLadder);
 	}
 	
 	/**
@@ -123,8 +121,7 @@ public class Main {
 		Set<String> encounteredWords = new HashSet<String>();
 		Queue<String> q = new LinkedList<String>();
 		ArrayList<String> emptyLadder = new ArrayList<String>();
-		ArrayList<String> workingLadder = new ArrayList<String>();
-		workingLadder.add(start.toUpperCase());
+		Map<String, String> parentMap = new HashMap<String, String>();
 		
 		// Return empty ladder if start and end are the same word
 		if ((start.toUpperCase()).equals(end.toUpperCase())) {
@@ -135,34 +132,25 @@ public class Main {
 		q.add(start.toUpperCase());
 		encounteredWords.add(start.toUpperCase());
 		
-		
-		// TODO IMPLEMENT BFS A DIFFERENT WAY
 		while (!q.isEmpty()) {
 			
 			String current = q.remove();
 			HashSet<String> linkedValues = linkedDict.get(current);
+			
 			if (linkedValues.contains(end.toUpperCase())) {
-				
 				System.out.println("TRUE - BFS");	// TODO Delete this
-				
-				return workingLadder; // TODO Find way to return real working ladder
-				
+				parentMap.put(end.toUpperCase(), current.toUpperCase());
+				return parentMapToLadder(parentMap, end.toUpperCase());
 			}
 			else {
-				
-				update(encounteredWords, q, current);
-				
-				// TODO Finish writing
-				
+				update(encounteredWords, q, current, parentMap);
 			}
 			
 		}
 		
 		System.out.println("FALSE - BFS");		// TODO Delete this
-		
 		// If there is no ladder, we return an empty list.
 		return emptyLadder;	
-
 	}
 
 	public static Set<String> makeDictionary() 
@@ -211,14 +199,16 @@ public class Main {
 	
 	// ----------------------------------- private static methods ----------------------------------- //
 	
-	private static void update(Set<String> encountered, Queue<String> q, String current)
+	
+	private static void update(Set<String> encountered, Queue<String> q, String current, Map<String, String> parentMap)
 	{
 		HashSet<String> linkedEntries = linkedDict.get(current);
 		
 		for (String word : linkedEntries) {
-			if (!encountered.contains(word)) {
-				q.add(word);
-				encountered.add(word);
+			if (!encountered.contains(word.toUpperCase())) {
+				q.add(word.toUpperCase());
+				encountered.add(word.toUpperCase());
+				parentMap.put(word.toUpperCase(), current.toUpperCase());
 			}
 		}
 		
@@ -232,17 +222,17 @@ public class Main {
 		String[] tempStrArray = new String[wordArray.length];
 		HashSet<String> entry = new HashSet<String>();
 
-		for(int i = 0; i < wordArray.length; i++){
+		for (int i = 0; i < wordArray.length; i++){
 			/* 'tempStr = word' would be a "shallow copy"
 			 * using the copyOf() method creates a "deep copy"
 			 */
 			tempStrArray = Arrays.copyOf(wordArray, wordArray.length);
 			
-			for(int j = 0; j < alphabet.length; j++){
+			for (int j = 0; j < alphabet.length; j++){
 				tempStrArray[i] = alphabet[j];
 				StringBuilder permut = new StringBuilder();
 				
-				for(String letter : tempStrArray) {
+				for (String letter : tempStrArray) {
 					permut.append(letter);
 				}
 				String finalPermut = permut.toString().toUpperCase();
@@ -265,12 +255,25 @@ public class Main {
 		
 		for (String word : dict) {
 			HashSet<String> entry = dictPermutations(dict, word);
-			linkedDict.put(word, entry);
+			linkedDict.put(word.toUpperCase(), entry);
 		}
 		
 		return;
 	}
 	
-	// TODO Write more methods
+	private static ArrayList<String> parentMapToLadder(Map<String, String> parentMap, String lastWord)
+	{
+		ArrayList<String> wordLadder = new ArrayList<String>();
+		wordLadder.add(lastWord.toUpperCase());
+		
+		while (!wordLadder.contains(words[0].toUpperCase())) {
+			String child = wordLadder.get(wordLadder.size() - 1);
+			String parent = parentMap.get(child);
+			wordLadder.add(parent.toUpperCase());
+		}
+		
+		Collections.reverse(wordLadder);	// Put word ladder in proper order
+		return wordLadder;
+	}
 	
 }
