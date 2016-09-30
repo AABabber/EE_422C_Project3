@@ -14,6 +14,7 @@
 
 package assignment3;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.io.*;
 
@@ -24,6 +25,9 @@ public class Main {
 	// TODO Appropriate way to store input? (see @194 & @204)
 	public static String[] words;
 	public static HashMap<String, HashSet<String>> linkedDict;
+	public static ArrayList<String> ladder = new ArrayList<>();
+	public static Set<String> visited = new HashSet<String>();
+	public static Set<String> dict;
 
 
 	public static void main(String[] args) throws Exception 
@@ -43,22 +47,31 @@ public class Main {
 		
 		
 		
-//		long time1 = System.nanoTime();		// TODO Delete this
+		long time1 = System.nanoTime();		// TODO Delete this
 		initialize();
-//		long time2 = System.nanoTime();		// TODO Delete this
+		long time2 = System.nanoTime();		// TODO Delete this
 
 		//  Methods to read in words, output ladder
 
-//		ArrayList<String> words = parse(kb);
+		//long time3 = System.nanoTime();		// TODO Delete this
+		ArrayList<String> words = parse(kb);
+		System.out.println("\n\nBFS Ladder:");
+		ArrayList<String> wordLadder = getWordLadderBFS(words.get(0), words.get(1));
+		printLadder(wordLadder);
 		
-//		long time3 = System.nanoTime();		// TODO Delete this
-//		ArrayList<String> wordLadder = getWordLadderBFS(words.get(0), words.get(1));
-//		printLadder(wordLadder);
-//		long time4 = System.nanoTime();		// TODO Delete this
+		//long time4 = System.nanoTime();		// TODO Delete this
 
-//		System.out.println("initialize: " + (time2 - time1) + " ns");		// TODO Delete this
-//		System.out.println("BFS & printLadder: " + (time4 - time3) + " ns");		// TODO Delete this
-		getWordLadderDFS("START", "STATE");
+		//System.out.println("initialize: " + (time2 - time1) + " ns");		// TODO Delete this
+		//System.out.println("BFS & printLadder: " + (time4 - time3) + " ns");		// TODO Delete this
+
+		//long time3 = System.nanoTime();
+		System.out.println("\n\nDFS Ladder:");
+		ArrayList<String> wLadder = getWordLadderDFS(words.get(0), words.get(1));
+		printLadder(wLadder);
+		//long time4 = System.nanoTime();(time4 - time3)+
+
+		System.out.println("DFS/print/init: " + ((time2 - time1)) + " ns");
+
 		
 		return;
 	}
@@ -73,6 +86,7 @@ public class Main {
 		alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 		words = new String[2];
 		constructLinkedDict();
+		dict = makeDictionary();
 	}
 
 	/**
@@ -93,6 +107,7 @@ public class Main {
 	     */
 	    String[] commands = input.split("\\s+");
 	    ArrayList<String> splitWords;
+		String[] temp;
 
 	    if (commands.length < 1) {
 	        System.exit(1);
@@ -105,12 +120,25 @@ public class Main {
 	        }
 	    }
 
+		if(commands.length == 1){
+			String input2 = keyboard.nextLine();
+			temp = input2.split("\\s+");
+			splitWords.add(temp[0]);
+		}
+
 	    words[0] = splitWords.get(0);
 	    words[1] = splitWords.get(1);
 
 	    return splitWords;
 	}
 
+	/**
+	 * This method finds a word ladder to the two five letter words entered (not the shortest)
+	 * Requirements for this method are that the two words have to be five letters long and not the same
+	 * @param start	this is the first five letter word the user enters
+	 * @param end this is the second five letter word the user enters
+	 * @return this method returns the ArrayList of strings for the word ladder
+	 */
 	public static ArrayList<String> getWordLadderDFS(String start, String end) 
 	{
 		// Set static variables
@@ -119,20 +147,25 @@ public class Main {
 		
 		// Returned list should be ordered start to end.  Include start and end.
 		// Return empty list if no ladder.
-				
-		Set<String> dict = makeDictionary();
-		Set<String>	visited = new HashSet<String>();
-		ArrayList<String> ladder = new ArrayList<String>();
-		ladder.add(start);
 
-		if(myDFS(start, end, dict, visited, ladder)){
-			Collections.reverse(ladder);
-			printLadder(ladder);
+		ladder.clear();
+		visited.clear();
+
+		if(DFS(words[0], words[1])) {
+			ladder.add(start);
 		}
+		Collections.reverse(ladder);
 
-		return ladder; 
+		return ladder;
 	}
 
+	/**
+	 * This method finds the shortest word ladder for the two strings entered
+	 * Requirements for this method are that the two words have to be five letters long and not the same
+	 * @param start this is the first five letter word user enters
+	 * @param end this is the second five letter word user enters
+	 * @return this method returns the ArrayList of strings for the word ladder
+	 */
     public static ArrayList<String> getWordLadderBFS(String start, String end) 
     {
     	// Set static variables
@@ -173,6 +206,10 @@ public class Main {
 		return emptyLadder;	
 	}
 
+	/**
+	 * Uses the five_letter_words.txt dictionary file to create a set.
+	 * @return the set of all strings found in the dictionary file.
+	 */
 	public static Set<String> makeDictionary() 
 	{
 		Set<String> words = new HashSet<String>();
@@ -296,39 +333,54 @@ public class Main {
 		return wordLadder;
 	}
 
-	private static boolean myDFS(String start, String end, Set<String> dict, Set<String> visited, ArrayList<String> ladder)
-	{
+	/**
+	 * This is the new DFS that works with no overflows
+	 * It makes use of the helper method below called closeDict
+	 */
+	private static boolean DFS(String start, String end){
+		ArrayList<String> cDict = closeDict(start);
+		if(start.isEmpty()){
+			return false;
+		}
 		visited.add(start);
-
-		for(int i = 0; i < start.length(); i++){
-			StringBuilder sb = new StringBuilder(start);
-			for(char ch = 'A'; ch <= 'Z'; ch ++){
-				if(start.charAt(i) == ch){
-					continue;
-				}
-				sb.setCharAt(i, ch);
-				String word = sb.toString();
-				if(word.equals(end)){
-					System.out.println(word);
-					//ladder.add(word);
-					return true;
-				}
-				else if(dict.contains(word) && !visited.contains(word)){
-					boolean found = myDFS(word, end, dict, visited, ladder);
+		if(start.equals(end)){
+			return true;
+		}
+		else{
+			for(String s: cDict){
+				if(!visited.contains(s)){
+					boolean found = DFS(s, end);
 					if(found){
-						System.out.println(word);
-						//ladder.add(word);
+						ladder.add(s);
 						return true;
 					}
-
-					//System.out.println(word);
-
 				}
 			}
 		}
-		
-		visited.remove(start);
 		return false;
+	}
+
+
+	/**
+	 * This method takes a string and creates all of its permuts and checks them within
+	 * dictionary and then returns all the permuts in an ArrayList
+	 */
+	private static ArrayList<String> closeDict(String word){
+		ArrayList<String> cDictionary = new ArrayList<String>();
+		for(int i = 0; i < word.length(); i++){
+			StringBuilder sb = new StringBuilder(word);
+			for(char ch = 'A'; ch <= 'Z'; ch++){
+				if(word.charAt(i) == ch){
+					continue;
+				}
+				sb.setCharAt(i, ch);
+				String newWord = sb.toString();
+				if(dict.contains(newWord)){
+					cDictionary.add(newWord);
+				}
+			}
+		}
+		return cDictionary;
 	}
 
 }
