@@ -43,21 +43,21 @@ public class Main {
 		
 		
 		
-		//long time1 = System.nanoTime();		// TODO Delete this
+//		long time1 = System.nanoTime();		// TODO Delete this
 		initialize();
-		//long time2 = System.nanoTime();		// TODO Delete this
+//		long time2 = System.nanoTime();		// TODO Delete this
 
 		//  Methods to read in words, output ladder
 
-		//long time3 = System.nanoTime();		// TODO Delete this
-		//ArrayList<String> words = parse(kb);
-		//ArrayList<String> wordLadder = getWordLadderBFS(words.get(0), words.get(1));
-		//printLadder(wordLadder);
+//		ArrayList<String> words = parse(kb);
 		
-		//long time4 = System.nanoTime();		// TODO Delete this
+//		long time3 = System.nanoTime();		// TODO Delete this
+//		ArrayList<String> wordLadder = getWordLadderBFS(words.get(0), words.get(1));
+//		printLadder(wordLadder);
+//		long time4 = System.nanoTime();		// TODO Delete this
 
-		//System.out.println("initialize: " + (time2 - time1) + " ns");		// TODO Delete this
-		//System.out.println("BFS & printLadder: " + (time4 - time3) + " ns");		// TODO Delete this
+//		System.out.println("initialize: " + (time2 - time1) + " ns");		// TODO Delete this
+//		System.out.println("BFS & printLadder: " + (time4 - time3) + " ns");		// TODO Delete this
 		getWordLadderDFS("START", "STATE");
 		
 		return;
@@ -120,7 +120,6 @@ public class Main {
 		// Returned list should be ordered start to end.  Include start and end.
 		// Return empty list if no ladder.
 				
-		// TODO Write method
 		Set<String> dict = makeDictionary();
 		Set<String>	visited = new HashSet<String>();
 		ArrayList<String> ladder = new ArrayList<String>();
@@ -131,7 +130,7 @@ public class Main {
 			printLadder(ladder);
 		}
 
-		return null; // TODO Replace this line later with real return
+		return ladder; 
 	}
 
     public static ArrayList<String> getWordLadderBFS(String start, String end) 
@@ -297,7 +296,8 @@ public class Main {
 		return wordLadder;
 	}
 
-	private static boolean myDFS(String start, String end, Set<String> dict, Set<String> visited, ArrayList<String> ladder){
+	private static boolean myDFS(String start, String end, Set<String> dict, Set<String> visited, ArrayList<String> ladder)
+	{
 		visited.add(start);
 
 		for(int i = 0; i < start.length(); i++){
@@ -316,7 +316,6 @@ public class Main {
 				else if(dict.contains(word) && !visited.contains(word)){
 					boolean found = myDFS(word, end, dict, visited, ladder);
 					if(found){
-						//
 						System.out.println(word);
 						//ladder.add(word);
 						return true;
@@ -327,6 +326,7 @@ public class Main {
 				}
 			}
 		}
+		
 		visited.remove(start);
 		return false;
 	}
