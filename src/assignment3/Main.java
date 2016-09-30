@@ -132,6 +132,13 @@ public class Main {
 	    return splitWords;
 	}
 
+	/**
+	 * This method finds a word ladder to the two five letter words entered (not the shortest)
+	 * Requirements for this method are that the two words have to be five letters long and not the same
+	 * @param start	this is the first five letter word the user enters
+	 * @param end this is the second five letter word the user enters
+	 * @return this method returns the ArrayList of strings for the word ladder
+	 */
 	public static ArrayList<String> getWordLadderDFS(String start, String end) 
 	{
 		// Set static variables
@@ -152,6 +159,13 @@ public class Main {
 		return ladder;
 	}
 
+	/**
+	 * This method finds the shortest word ladder for the two strings entered
+	 * Requirements for this method are that the two words have to be five letters long and not the same
+	 * @param start this is the first five letter word user enters
+	 * @param end this is the second five letter word user enters
+	 * @return this method returns the ArrayList of strings for the word ladder
+	 */
     public static ArrayList<String> getWordLadderBFS(String start, String end) 
     {
     	// Set static variables
@@ -192,6 +206,10 @@ public class Main {
 		return emptyLadder;	
 	}
 
+	/**
+	 * Uses the five_letter_words.txt dictionary file to create a set.
+	 * @return the set of all strings found in the dictionary file.
+	 */
 	public static Set<String> makeDictionary() 
 	{
 		Set<String> words = new HashSet<String>();
